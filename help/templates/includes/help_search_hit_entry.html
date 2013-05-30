@@ -5,7 +5,7 @@
 	</p>
 	<p>
 	In: {% for cat in item.category.trail %}
-		<a href="{% url help_item_list cat.slug %}">{{cat}}</a>&nbsp;>&nbsp;
+		<a href="{% url "help_item_list" cat.slug %}">{{cat}}</a>&nbsp;>&nbsp;
 	{% endfor %}
 	</p>
 </div>

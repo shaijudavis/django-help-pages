@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block page_title %} Help {% endblock %}
+{% block title %} Help {% endblock %}
 
-{% block content %}
+{% block base_content %}
 <div>
 	<p>
 		{% for cat in item.category.trail %}
-			<a href="{% url help_item_list cat.slug %}">{{cat}}</a>&nbsp;>&nbsp;
+			<a href="{% url "help_item_list" cat.slug %}">{{cat}}</a>&nbsp;>&nbsp;
 		{% endfor %}
 	</p>
 
@@ -17,12 +17,12 @@
 			{% if related_items %}
 			Also in this section:
 			{% for item in related_items  %}
-				<a href = "{% url help_single_item cat.slug item.slug %}">{{cat}}</a>
+				<a href = "{% url "help_single_item" cat.slug item.slug %}">{{cat}}</a>
 			{% endfor %}
 			{% endif %}
 		{% endwith %}	
 	<p>
-		<a href="{% url help_category_list %}">See all help topics</a>
+		<a href="{% url "help_category_list" %}">See all help topics</a>
 	</p>
 </div>
 {% endblock %}

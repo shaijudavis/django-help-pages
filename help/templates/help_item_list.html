@@ -1,17 +1,15 @@
-{% extends "base.html" %}
+{% extends "help_category_list.html" %}
 
-{% block page_title %} Help {% endblock %}
+{% block title %} List Item{% endblock %}
 
-{% block content %}
-<div>
+{% block braedcrumb_content %}
 	<p>
-		<a href = "{% url help_category_list %}">Start</a> >
+		<a href = "{% url "help_category_list" %}">Start</a> >
 		{% for cat in trail  %}
-		<a href = "{% url help_item_list cat.slug %}">{{cat}}</a>
+		<a href = "{% url "help_item_list" cat.slug %}">{{cat}}</a>
 		{% if not forloop.last %} > {% endif %}
 		{% endfor %}
 	</p>
-	<h2>{{category}}</h2>
 	{% with category.subcategories as subcategories %}
 		{% if subcategories %}
 			Subsections of this section:
@@ -22,21 +20,26 @@
 		{% endwith %}
 		{% endfor %}
 	{% endwith %} 
-	
-
+{% endblock %}
+{% block page_list %}
 	{% if help_items|length == 0 %}
-		This section has no help items in it, but its subcategories may do
+		<p class="text-warning">This section has no help items in it, but its subcategories may do</p>
 	{% endif %}
+	<table class="table table-bordered">
+	<tr>
+		<th>Heading</th>
+		<th>Body</th>
+	</tr>
 	{% for item in help_items %}
-	<div>
-		<h3>
-			<a href="{% url help_single_item item.category.slug item.slug %}">{{item.heading}}</a>
-		</h3>
-		<p>{{item.body}}</p>
-	</div>		
+	<tr>
+		<td>
+			<a href="{% url "help_single_item" item.category.slug item.slug %}">{{item.heading}}</a>
+		</td>
+		<td>{{item.body}}</td>
+	</tr>
 	{% endfor %}
+	</table>
 	<p>
-		<a href="{% url help_category_list %}">Go back</a>
+		<a href="{% url "help_category_list" %}">Go back</a>
 	</p>
-</div>
 {% endblock %}
