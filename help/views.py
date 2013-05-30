@@ -13,9 +13,7 @@ from help.forms import SearchForm
 def category_list(request, template='help_category_list.html'):
     
     tree = None
-
     top_categories = HelpCategory.objects.filter(parent=None).order_by('order')
-    
     branches = []
 
     for top_category in top_categories:
@@ -27,14 +25,21 @@ def category_list(request, template='help_category_list.html'):
             
     return render_with_context(request, template, {'branches':branches})
     
-
-
-
-
 def item_list(request, identifier=None, template="help_item_list.html"):
     """
     Lists all the items in that category
     """
+    tree = None
+    top_categories = HelpCategory.objects.filter(parent=None).order_by('order')
+    branches = []
+
+    for top_category in top_categories:
+        subcategories = top_category.subcategories
+        if len(subcategories) == 0:
+            branches.append([top_category])
+        else:
+            branches.append([top_category, subcategories])
+            
     try:
         category = HelpCategory.published_objects.get(id=identifier)
     except (HelpCategory.DoesNotExist, ValueError): #ValueError would be trying to pass a string as an int
@@ -47,7 +52,7 @@ def item_list(request, identifier=None, template="help_item_list.html"):
     
     trail = category.trail
     
-    return render_with_context(request, template, {'category':category, 'help_items':help_items, 'trail':trail } )
+    return render_with_context(request, template, {'category':category, 'help_items':help_items, 'trail':trail,'branches':branches } )
     
     
     
@@ -100,10 +105,6 @@ def single_item(request, cat_identifier, item_identifier, template='help_single_
             
             
     return render_with_context(request, template, {'item':help_item } )
-    
-    
-    
-    
     
 def search_results(request, template="search_results.html"):
     """
