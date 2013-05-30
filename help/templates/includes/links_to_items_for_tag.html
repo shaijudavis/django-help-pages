@@ -1,7 +1,7 @@
 <ul>
 {% for item in items  %}
     <li>
-        <a href="{% url "help_single_item item.category.slug item.slug" %}">{{item.heading|truncatewords:15}}</a>
+        <a href="{% url "help_single_item" item.category.slug item.slug %}">{{item.heading|truncatewords:15}}</a>
     </li>
 {% endfor %}
 </ul>

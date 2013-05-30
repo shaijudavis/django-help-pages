@@ -23,7 +23,9 @@ def category_list(request, template='help_category_list.html'):
         else:
             branches.append([top_category, subcategories])
             
-    return render_with_context(request, template, {'branches':branches})
+    help_items = HelpItem.published_objects.all()
+            
+    return render_with_context(request, template, {'branches':branches,'help_items':help_items})
     
 def item_list(request, identifier=None, template="help_item_list.html"):
     """

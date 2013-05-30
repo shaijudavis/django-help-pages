@@ -26,32 +26,26 @@
 		<div class="row-fluid show-grid">
 			<div class="span8">	
 					{% block page_list %}
+						{% if help_items|length == 0 %}
+							<p class="text-warning">This section has no help items in it, but its subcategories may do</p>
+						{% endif %}
+						<table class="table table-bordered">
+						<tr>
+							<th>Heading</th>
+							<th>Body</th>
+						</tr>
+						{% for item in help_items %}
+						<tr>
+							<td>
+								<a href="{% url "help_single_item" item.category.slug item.slug %}">{{item.heading}}</a>
+							</td>
+							<td>{{item.body}}</td>
+						</tr>
+						{% endfor %}
+						</table>
 				    {% endblock %}
 			</div>
 		</div>
 	</div>	
-</div>
-
-<div class="span12">
-<p>Example search inclusion tag<p>
-
-<p>Tag cloud list</p>
-{% tag_cloud_for_model help.HelpItem as help_tags %}
-
-{% for tag in help_tags %}
-{% with tag.name|urlencode as tag_name  %}    
-    <a href="{% url "help_items_by_tag tag_name"  %}">{{tag.name}}</a>
-{% endwith %}
-{% endfor %}     
-
-
-<p>Example of inclusion tags for all tagged items stored</p>
-
-
-{% for tag in help_tags  %}
-    <p>{{tag}}</p>
-    {% links_to_items_for_tag tag %}
-    
-{% endfor %}
 </div>
 {% endblock %}
