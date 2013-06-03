@@ -3,13 +3,13 @@
 {% block title %} List Item{% endblock %}
 
 {% block braedcrumb_content %}
-	<p>
-		<a href = "{% url "help_category_list" %}">Start</a> >
+	<ul class="breadcrumb">
+		<li><a href = "{% url "help_category_list" %}">Start</a></li> <span class="divider">/</span>
 		{% for cat in trail  %}
-		<a href = "{% url "help_item_list" cat.slug %}">{{cat}}</a>
-		{% if not forloop.last %} > {% endif %}
+		<li><a href = "{% url "help_item_list" cat.slug %}">{{cat}}</a></li>
+		{% if not forloop.last %} <span class="divider">/</span> {% endif %}
 		{% endfor %}
-	</p>
+	</ul>
 	{% with category.subcategories as subcategories %}
 		{% if subcategories %}
 			Subsections of this section:
