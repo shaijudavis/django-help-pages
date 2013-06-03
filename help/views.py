@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404
 from help.shortcuts import render_with_context
 from help.models import HelpCategory, HelpItem
 from help.forms import SearchForm
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def category_list(request, template='help_category_list.html'):
     
@@ -24,8 +25,20 @@ def category_list(request, template='help_category_list.html'):
             branches.append([top_category, subcategories])
             
     help_items = HelpItem.published_objects.all()
+    
+    paginator = Paginator(help_items, 2) # Show 2 help on each row
+    page = request.GET.get('page')
+    
+    try:
+        helps = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        helps = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        helps = paginator.page(paginator.num_pages)
             
-    return render_with_context(request, template, {'branches':branches,'help_items':help_items})
+    return render_with_context(request, template, {'branches':branches,'help_items':helps})
     
 def item_list(request, identifier=None, template="help_item_list.html"):
     """

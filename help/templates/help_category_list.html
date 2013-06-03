@@ -44,6 +44,29 @@
 						</table>
 				    {% endblock %}
 		</div>
+		<div class="pagination">
+		  <ul>
+			{% if help_items.has_previous %}
+			  <li><a href="?page={{ help_items.previous_page_number }}">previous</a></li>
+			{% endif %}
+			{% if help_items.page_range_data.show_first %}
+			  <li><a href="?page=1">1</a></li>
+			{% endif %}
+			{% for i in help_items.page_range_data.page_range %}
+				{% ifequal i help_items.number %}
+					{{ i }}
+				{% else %}
+					<li><a href="?page={{ i }}">{{ i }}</a></li>
+				{% endifequal %}
+			{% endfor %}
+			{% if help_items.page_range_data.show_last %}
+				<li><a href="?page={{ help_items.paginator.num_pages }}">{{ help_items.paginator.num_pages }}</a></li>
+			{% endif %} 
+			{% if help_items.has_next %}
+				<li><a href="?page={{ help_items.next_page_number }}">next</a></li>
+			{% endif %}
+  		 </ul>
+		</div>
 	</div>	
 </div>
 {% endblock %}
